@@ -1,13 +1,12 @@
-import Row from './Row.jsx'
+import NameCard from './NameCard.jsx'
 
-export default function List({ matches }) {
-
+export default function Row({ styles, index, gifter, receiver }) {
   return (
-    <div className="list">
-      <Row styles="row row-header" index="#" gifter="Gifter" receiver="Receiver" />
-      {matches.map((match, index) => (
-        <Row styles="row row-row" key={index} index={index} gifter={match[0]} receiver={match[1]} />
-      ))}
+    <div className={styles}>
+      <p>{typeof index == "number" ? index + 1 : index}</p>
+      <NameCard person={gifter} icon="../../public/santa-claus.png" />
+      <p>&</p>
+      <NameCard person={receiver} icon="../../public/giftbox.png" />
     </div>
   )
 }
