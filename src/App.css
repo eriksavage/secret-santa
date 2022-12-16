@@ -1,41 +1,58 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
+@import url('https://fonts.googleapis.com/css2?family=Snowburst+One&display=swap');
+
+html,
+body {
+  margin: 0px;
+  height: 100%;
+}
+
+:root {
+  height: 100%;
+}
+main {
+  font-family: 'Snowburst One', cursive;
+  height: 100%;
+  background: #69ba94;
+}
+h1 {
   text-align: center;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
+.list {
+  width: 600px;
+  margin-top: 20px;
 }
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+.row {
+  display: flex;
+  justify-content: space-around;
+  width: 80%;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.row-header {
+  background: white;
+  font-weight: bold;
+  border-bottom: solid 1px black;
+}
+.row-row {
+  background: #ff5c5c;
+  border-bottom: solid 1px black;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+.namecard {
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+  text-align: center;
+  width: 100px;
+  height: 50px;
 }
 
-.card {
-  padding: 2em;
+.namecard-img {
+  height: 50%;
+  margin-right: 5px;
 }
 
-.read-the-docs {
-  color: #888;
+footer {
+  text-align: center;
+  font-size: 8px;
 }
