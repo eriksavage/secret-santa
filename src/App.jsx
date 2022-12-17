@@ -2,7 +2,7 @@ import './App.css'
 import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import List from './components/List.jsx'
-import Form from './components/Form.jsx'
+import ParticipantForm from './components/ParticipantForm.jsx'
 import { useState } from 'react'
 
 export default function App() {
@@ -22,7 +22,6 @@ export default function App() {
       count = count + 1;
     }
     console.log("Success!");
-    // let shuffledParticipants = participantArray;
     let matchedParticipants = [];
     for (let i = 0; i < participantArray.length; i++) {
       matchedParticipants[i] = [participantArray[i], shuffledParticipants[i]];
@@ -66,7 +65,7 @@ export default function App() {
   return (
     <main>
       <Header />
-      <Form makeMatches={makeMatches} participants={participants} />
+      <ParticipantForm makeMatches={makeMatches} participants={participants} />
       <List matches={matches} />
       <Footer />
     </main>
