@@ -11,7 +11,7 @@ The replit app got the job done for 2022, would like this to be polished for the
 Building with React, JavaScript, Vite.
 
 ## Feature Road Map
-- [ ] import existing replit application
+- [x] import existing replit application
 - [ ] add form to allow for custom participants
   - [ ] generate participant fields based on prompted number of participants
   - [ ] button to add additional participant field as needed
