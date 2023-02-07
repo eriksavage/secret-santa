@@ -1,14 +1,23 @@
 import ParticipantInput from "./ParticipantInput";
 
-export default function ParticipantForm({ makeMatches, participants }) {
+export default function ParticipantForm({ makeMatches, participants, setParticipants }) {
 
-  function formSubmit(event) {
+  const formSubmit = (event) => {
     event.preventDefault();
+
+    const namedParticipants = participants.map((participant, index) => {
+      participant.name = event.target.form[index].value;
+      return participant;
+    });
+
+    console.log(event);
+    console.log(namedParticipants);
+    setParticipants(namedParticipants);
     makeMatches(participants);
     console.log('submit clicked');
   }
 
-  function addParticipant() {
+  const addParticipant = () => {
     console.log('add participant clicked');
     participants.push(<ParticipantInput />);
   }
@@ -19,8 +28,9 @@ export default function ParticipantForm({ makeMatches, participants }) {
         {participants.map((participant, index) => (
           <ParticipantInput
             key={index}
+            number={participant.number}
           />
-        ))}<ParticipantInput />
+        ))}
         <input onClick={formSubmit} type="submit" value="Make Matches" />
       </form>
       <button onClick={addParticipant}>+</button>

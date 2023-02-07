@@ -7,10 +7,12 @@ import { useState } from 'react'
 
 export default function App() {
 
-  const [participants, setParticipants] = useState(["Erik", "Ryan", "Amy", "Jessica", "Bob", "Leslie"]);
+  // const [participants, setParticipants] = useState(["Erik", "Ryan", "Amy", "Jessica", "Bob", "Leslie"]);
+  const [participants, setParticipants] = useState([{ number: 1 }, { number: 2 }, { number: 3 }, { number: 4 }, { number: 5 }]);
   const [matches, setMatches] = useState([]);
 
-  function makeMatches(participantArray) {
+  function makeMatches(participants) {
+    const participantArray = participants.map(participant => participant.name);
     console.log("clicked");
     let shuffledParticipants;
     let isValid = false;
@@ -26,7 +28,7 @@ export default function App() {
     for (let i = 0; i < participantArray.length; i++) {
       matchedParticipants[i] = [participantArray[i], shuffledParticipants[i]];
     }
-    setMatches(matches => matchedParticipants);
+    setMatches(matchedParticipants);
   }
 
   function shuffle(array) {
@@ -65,7 +67,7 @@ export default function App() {
   return (
     <main>
       <Header />
-      <ParticipantForm makeMatches={makeMatches} participants={participants} />
+      <ParticipantForm makeMatches={makeMatches} participants={participants} setParticipants={setParticipants} />
       <List matches={matches} />
       <Footer />
     </main>

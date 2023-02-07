@@ -1,15 +1,15 @@
-export default function ParticipantInput(props) {
+export default function ParticipantInput({ number }) {
 
   return (
     <div className="participant-label">
       <label>
-        Name:
-        <input type="text" name="name" />
+        Participant:
+        <input type="text" name={`participant${number}`} id={`participant${number}`} />
       </label>
-      <label>
+      {/* <label>
         Spouse:
         <input type="text" name="spouse" />
-      </label>
+      </label> */}
     </div>
   )
 }
