@@ -1,5 +1,8 @@
 # secret-santa
 
+## Run
+`npm run dev` to launch vite server
+
 ## About
 A single page secret santa web application. This app was intially developed as a [replit project](https://replit.com/@eriksavage/SavageSecretSanta#src/App.css) to match a hard coded list of participants.
 
