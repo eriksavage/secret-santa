@@ -3,7 +3,7 @@ import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import List from './components/List.jsx'
 import ParticipantForm from './components/ParticipantForm.jsx'
-import { useState } from 'react'
+import { useState, useEffect } from 'react'
 
 export default function App() {
 
@@ -64,9 +64,12 @@ export default function App() {
     return valid;
   }
 
+  useEffect(() => { setParticipants(participants) }, [participants])
+
   return (
     <main>
       <Header />
+      <p>participants {`${participants}`}</p>
       <ParticipantForm makeMatches={makeMatches} participants={participants} setParticipants={setParticipants} />
       <List matches={matches} />
       <Footer />

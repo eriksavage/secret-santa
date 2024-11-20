@@ -18,8 +18,7 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
   }
 
   const addParticipant = () => {
-    console.log('add participant clicked');
-    participants.push(<ParticipantInput />);
+    setParticipants([...participants, { number: participants.length + 1 }]);
   }
 
   return (
