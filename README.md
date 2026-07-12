@@ -15,11 +15,12 @@ Building with React, JavaScript, Vite.
 
 ## Feature Road Map
 - [x] import existing replit application
-- [ ] add form to allow for custom participants
+- [x] add form to allow for custom participants
   - [ ] generate participant fields based on prompted number of participants
   - [ ] button to add additional participant field as needed
-- [ ] make matches on form submission
+- [x] make matches on form submission
 - [ ] spouse validation
   - [ ] spouse form field
   - [ ] update validation function to not allow for spouses to be matched
   - [ ] toggle to be able to allow spouse matches
+- [ ] repeat validation (from previous year)
