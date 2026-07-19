@@ -5,34 +5,49 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
   const formSubmit = (event) => {
     event.preventDefault();
 
-    const namedParticipants = participants.map((participant, index) => {
-      participant.name = event.target.form[index].value;
-      return participant;
+    const formData = new FormData(event.target.form);
+
+    const updatedParticipants = participants.map((participant) => {
+      const { id } = participant;
+      return {
+        ...participant,
+        name: formData.get(`name-${id}`)?.trim() ?? '',
+        email: formData.get(`email-${id}`)?.trim() ?? '',
+        excludeMatchingWith: formData.get(`exclude-${id}`) || null,
+        wishlist: formData.get(`wishlist-${id}`)?.trim() ?? '',
+      };
     });
 
-    console.log(event);
-    console.log(namedParticipants);
-    setParticipants(namedParticipants);
-    makeMatches(participants);
-    console.log('submit clicked');
+    setParticipants(updatedParticipants);
+    makeMatches(updatedParticipants);
   }
 
   const addParticipant = () => {
-    setParticipants([...participants, { number: participants.length + 1 }]);
+    setParticipants([
+      ...participants,
+      {
+        id: crypto.randomUUID(),
+        name: '',
+        email: '',
+        excludeMatchingWith: null,
+        wishlist: '',
+      },
+    ]);
   }
 
   return (
     <div className="form">
       <form>
-        {participants.map((participant, index) => (
+        {participants.map((participant) => (
           <ParticipantInput
-            key={index}
-            number={participant.number}
+            key={participant.id}
+            participant={participant}
+            participants={participants}
           />
         ))}
         <input onClick={formSubmit} type="submit" value="Make Matches" />
       </form>
-      <button onClick={addParticipant}>+</button>
+      <button onClick={addParticipant}>Add Participant</button>
     </div>
   )
 }
