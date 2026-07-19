@@ -1,12 +1,16 @@
-export default function ParticipantInput({ participant, participants }) {
+export default function ParticipantInput({ participant, participants, onNameChange }) {
   const { id } = participant;
-  const otherParticipants = participants.filter((p) => p.id !== id);
 
   return (
     <div className="participant-label">
       <label>
         Name:
-        <input type="text" name={`name-${id}`} defaultValue={participant.name} />
+        <input
+          type="text"
+          name={`name-${id}`}
+          value={participant.name}
+          onChange={(event) => onNameChange(id, event.target.value)}
+        />
       </label>
       <label>
         Email:
@@ -16,8 +20,10 @@ export default function ParticipantInput({ participant, participants }) {
         Don't match with:
         <select name={`exclude-${id}`} defaultValue={participant.excludeMatchingWith || ''}>
           <option value="">-- none --</option>
-          {otherParticipants.map((p, index) => (
-            <option key={p.id} value={p.id}>{p.name || `Participant ${index + 1}`}</option>
+          {participants.map((p, index) => (
+            p.id === id ? null : (
+              <option key={p.id} value={p.id}>{p.name || `Participant ${index + 1}`}</option>
+            )
           ))}
         </select>
       </label>

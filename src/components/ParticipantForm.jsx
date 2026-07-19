@@ -22,6 +22,12 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
     makeMatches(updatedParticipants);
   }
 
+  const updateParticipantName = (id, name) => {
+    setParticipants(participants.map((participant) => (
+      participant.id === id ? { ...participant, name } : participant
+    )));
+  }
+
   const addParticipant = () => {
     setParticipants([
       ...participants,
@@ -43,6 +49,7 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
             key={participant.id}
             participant={participant}
             participants={participants}
+            onNameChange={updateParticipantName}
           />
         ))}
         <input onClick={formSubmit} type="submit" value="Make Matches" />
