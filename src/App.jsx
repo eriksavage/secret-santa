@@ -5,44 +5,46 @@ import List from './components/List.jsx'
 import ParticipantForm from './components/ParticipantForm.jsx'
 import { useState, useEffect } from 'react'
 
+function createParticipant() {
+  return {
+    id: crypto.randomUUID(),
+    name: '',
+    email: '',
+    excludeMatchingWith: null,
+    wishlist: '',
+  };
+}
+
 export default function App() {
 
-  const [participants, setParticipants] = useState([{ number: 1 }, { number: 2 }, { number: 3 }, { number: 4 }, { number: 5 }]);
+  const [participants, setParticipants] = useState(() => (
+    Array.from({ length: 1 }, createParticipant)
+  ));
   const [previousMatches, setPreviousMatches] = useState(() => {
     const stored = localStorage.getItem('previousMatches');
     return stored ? JSON.parse(stored) : {};
   });
   const [matches, setMatches] = useState([]);
 
-  const spouses = {
-    Gordon: "Austin",
-    Austin: "Gordon",
-    Ryan: "Jessica",
-    Jessica: "Ryan",
-    Leslie: "Bob",
-    Bob: "Leslie",
-    Amy: "Erik",
-    Erik: "Amy"
-  };
-
   function makeMatches(participants) {
-    const participantArray = participants.map(participant => participant.name);
     console.log("clicked");
     let shuffledParticipants;
     let isValid = false;
     let count = 1;
     while (isValid !== true) {
       console.log(`Shuffle attempt #${count}`)
-      shuffledParticipants = shuffle(participantArray);
-      isValid = validateMatches(participantArray, shuffledParticipants);
+      shuffledParticipants = shuffle(participants);
+      isValid = validateMatches(participants, shuffledParticipants);
       count = count + 1;
     }
     console.log("Success!");
     let matchedParticipants = [];
-    for (let i = 0; i < participantArray.length; i++) {
-      matchedParticipants[i] = [participantArray[i], shuffledParticipants[i]];
+    for (let i = 0; i < participants.length; i++) {
+      matchedParticipants[i] = [participants[i], shuffledParticipants[i]];
     }
-    const newPreviousMatches = Object.fromEntries(matchedParticipants);
+    const newPreviousMatches = Object.fromEntries(
+      matchedParticipants.map(([gifter, receiver]) => [gifter.id, receiver.id])
+    );
     setPreviousMatches(newPreviousMatches);
     localStorage.setItem('previousMatches', JSON.stringify(newPreviousMatches));
     setMatches(matchedParticipants);
@@ -68,18 +70,18 @@ export default function App() {
     return shuffled;
   }
 
-  function validateMatches(originalArr, shuffledArr) {
+  function validateMatches(gifters, receivers) {
     console.log("Checking matches...")
     let valid = true;
-    for (let i = 0; i < originalArr.length; i++) {
-      const gifter = originalArr[i];
-      const receipient = shuffledArr[i];
-      const hasSelf = gifter === receipient;
-      const hasSpouse = spouses[gifter] === receipient;
-      const repeat = previousMatches[gifter] === receipient;
-      if (hasSelf || hasSpouse || repeat) {
+    for (let i = 0; i < gifters.length; i++) {
+      const gifter = gifters[i];
+      const receiver = receivers[i];
+      const hasSelf = gifter.id === receiver.id;
+      const hasExclusion = gifter.excludeMatchingWith === receiver.id || receiver.excludeMatchingWith === gifter.id;
+      const repeat = previousMatches[gifter.id] === receiver.id;
+      if (hasSelf || hasExclusion || repeat) {
         valid = false;
-        console.log(`Invalid Match: ${originalArr[i]} with ${shuffledArr[i]}`);
+        console.log(`Invalid Match: ${gifter.name} with ${receiver.name}`);
         break;
       }
     }
