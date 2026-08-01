@@ -2,23 +2,27 @@ export default function ParticipantInput({ participant, participants, onNameChan
   const { id } = participant;
 
   return (
-    <div className="participant-label">
-      <label>
-        Name:
-        <input
-          type="text"
-          name={`name-${id}`}
-          value={participant.name}
-          onChange={(event) => onNameChange(id, event.target.value)}
-        />
-      </label>
-      <label>
-        Email:
-        <input type="email" name={`email-${id}`} defaultValue={participant.email} />
-      </label>
-      <label>
-        Don't match with:
-        <select name={`exclude-${id}`} defaultValue={participant.excludeMatchingWith || ''}>
+    <div className="card elev-sm card-body">
+      <div className="ss-grid-2">
+        <div className="field">
+          <label htmlFor={`name-${id}`}>Name</label>
+          <input
+            className="input"
+            id={`name-${id}`}
+            type="text"
+            name={`name-${id}`}
+            value={participant.name}
+            onChange={(event) => onNameChange(id, event.target.value)}
+          />
+        </div>
+        <div className="field">
+          <label htmlFor={`email-${id}`}>Email</label>
+          <input className="input" id={`email-${id}`} type="email" name={`email-${id}`} defaultValue={participant.email} />
+        </div>
+      </div>
+      <div className="field">
+        <label htmlFor={`exclude-${id}`}>Don't match with</label>
+        <select className="input" id={`exclude-${id}`} name={`exclude-${id}`} defaultValue={participant.excludeMatchingWith || ''}>
           <option value="">-- none --</option>
           {participants.map((p, index) => (
             p.id === id ? null : (
@@ -26,11 +30,11 @@ export default function ParticipantInput({ participant, participants, onNameChan
             )
           ))}
         </select>
-      </label>
-      <label>
-        Wishlist:
-        <textarea name={`wishlist-${id}`} defaultValue={participant.wishlist} />
-      </label>
+      </div>
+      <div className="field">
+        <label htmlFor={`wishlist-${id}`}>Wishlist</label>
+        <textarea className="input" id={`wishlist-${id}`} name={`wishlist-${id}`} defaultValue={participant.wishlist} />
+      </div>
     </div>
   )
 }

@@ -42,8 +42,9 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
   }
 
   return (
-    <div className="form">
-      <form>
+    <div className="card ss-section">
+      <h2 className="card-title">Participants</h2>
+      <form className="ss-section">
         {participants.map((participant) => (
           <ParticipantInput
             key={participant.id}
@@ -52,9 +53,9 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
             onNameChange={updateParticipantName}
           />
         ))}
-        <input onClick={formSubmit} type="submit" value="Make Matches" />
+        <input onClick={formSubmit} type="submit" className="btn btn-primary btn-block" value="Make Matches" />
       </form>
-      <button onClick={addParticipant}>Add Participant</button>
+      <button className="btn btn-ghost" onClick={addParticipant}>Add Participant</button>
     </div>
   )
 }
