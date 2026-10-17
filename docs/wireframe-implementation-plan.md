@@ -37,6 +37,8 @@ matching → delivery → history.
 
 ## 1. `feature/design-tokens-and-layout`
 
+**Status:** ✅ Implemented
+
 **Goal:** Establish the visual foundation so subsequent PRs style new UI correctly
 the first time instead of restyling later.
 
@@ -285,17 +287,17 @@ for backfilling history from before this app existed.
 
 ## Sequencing summary
 
-| # | Branch | Depends on merge of |
-|---|--------|----------------------|
-| 1 | `feature/design-tokens-and-layout` | `main` |
-| 2 | `feature/exchange-settings` | #1 |
-| 3 | `feature/partner-exclusion-and-participant-cards` | #2 |
-| 4 | `feature/robust-match-generation` | #3 |
-| 5 | `feature/reveal-lock-matches` | #4 |
-| 6 | `feature/email-invites` | #5 |
-| 7 | `feature/history-tab-and-autosave` | #6 |
-| 8 | `feature/history-manual-editing` | #7 |
-| 9 | `feature/history-import-export` | #8 |
+| # | Branch | Depends on merge of | Status |
+|---|--------|----------------------|--------|
+| 1 | `feature/design-tokens-and-layout` | `main` | ✅ Implemented |
+| 2 | `feature/exchange-settings` | #1 |  |
+| 3 | `feature/partner-exclusion-and-participant-cards` | #2 |  |
+| 4 | `feature/robust-match-generation` | #3 |  |
+| 5 | `feature/reveal-lock-matches` | #4 |  |
+| 6 | `feature/email-invites` | #5 |  |
+| 7 | `feature/history-tab-and-autosave` | #6 |  |
+| 8 | `feature/history-manual-editing` | #7 |  |
+| 9 | `feature/history-import-export` | #8 |  |
 
 Open one PR per branch, in order. Do not open PR *N+1* until PR *N* is approved and
 merged into `main`.
