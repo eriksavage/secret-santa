@@ -93,8 +93,10 @@ export default function App() {
   return (
     <main>
       <Header />
-      <ParticipantForm makeMatches={makeMatches} participants={participants} setParticipants={setParticipants} />
-      <List matches={matches} />
+      <div className="ss-wrap ss-section">
+        <ParticipantForm makeMatches={makeMatches} participants={participants} setParticipants={setParticipants} />
+        <List matches={matches} />
+      </div>
       <Footer />
     </main>
   )
