@@ -358,3 +358,9 @@ footer {
   color: var(--color-neutral-600);
   padding: var(--space-4) 0;
 }
+
+.ss-setting-label {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--color-neutral-700);
+}

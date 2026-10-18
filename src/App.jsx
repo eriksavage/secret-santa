@@ -3,6 +3,7 @@ import Header from './components/Header.jsx'
 import Footer from './components/Footer.jsx'
 import List from './components/List.jsx'
 import ParticipantForm from './components/ParticipantForm.jsx'
+import ExchangeSettings from './components/ExchangeSettings.jsx'
 import { useState, useEffect } from 'react'
 
 function createParticipant() {
@@ -15,6 +16,24 @@ function createParticipant() {
   };
 }
 
+const SETTINGS_KEY = 'secretSanta.settings';
+
+const defaultSettings = {
+  budget: '',
+  exchangeDate: '',
+  customMessage: '',
+  allowRepeats: false,
+};
+
+function loadSettings() {
+  try {
+    const stored = localStorage.getItem(SETTINGS_KEY);
+    return stored ? { ...defaultSettings, ...JSON.parse(stored) } : defaultSettings;
+  } catch {
+    return defaultSettings;
+  }
+}
+
 export default function App() {
 
   const [participants, setParticipants] = useState(() => (
@@ -25,6 +44,11 @@ export default function App() {
     return stored ? JSON.parse(stored) : {};
   });
   const [matches, setMatches] = useState([]);
+  const [settings, setSettings] = useState(loadSettings);
+
+  useEffect(() => {
+    localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
+  }, [settings]);
 
   function makeMatches(participants) {
     console.log("clicked");
@@ -78,7 +102,7 @@ export default function App() {
       const receiver = receivers[i];
       const hasSelf = gifter.id === receiver.id;
       const hasExclusion = gifter.excludeMatchingWith === receiver.id || receiver.excludeMatchingWith === gifter.id;
-      const repeat = previousMatches[gifter.id] === receiver.id;
+      const repeat = !settings.allowRepeats && previousMatches[gifter.id] === receiver.id;
       if (hasSelf || hasExclusion || repeat) {
         valid = false;
         console.log(`Invalid Match: ${gifter.name} with ${receiver.name}`);
@@ -94,6 +118,7 @@ export default function App() {
     <main>
       <Header />
       <div className="ss-wrap ss-section">
+        <ExchangeSettings settings={settings} setSettings={setSettings} />
         <ParticipantForm makeMatches={makeMatches} participants={participants} setParticipants={setParticipants} />
         <List matches={matches} />
       </div>
