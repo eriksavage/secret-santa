@@ -68,6 +68,8 @@ the first time instead of restyling later.
 
 ## 2. `feature/exchange-settings`
 
+**Status:** ✅ Implemented
+
 **Goal:** Add the "Exchange details" card: budget, exchange date, custom invite
 message, and an avoid/allow-repeats toggle.
 
@@ -290,7 +292,7 @@ for backfilling history from before this app existed.
 | # | Branch | Depends on merge of | Status |
 |---|--------|----------------------|--------|
 | 1 | `feature/design-tokens-and-layout` | `main` | ✅ Implemented |
-| 2 | `feature/exchange-settings` | #1 |  |
+| 2 | `feature/exchange-settings` | #1 | ✅ Implemented |
 | 3 | `feature/partner-exclusion-and-participant-cards` | #2 |  |
 | 4 | `feature/robust-match-generation` | #3 |  |
 | 5 | `feature/reveal-lock-matches` | #4 |  |
