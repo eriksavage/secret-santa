@@ -364,3 +364,55 @@ footer {
   font-weight: 600;
   color: var(--color-neutral-700);
 }
+
+/* ---------- Participants ---------- */
+
+.ss-participant-card > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.ss-participant-card > summary::-webkit-details-marker {
+  display: none;
+}
+
+.ss-participant-card > summary::before {
+  content: "▸";
+  color: var(--color-neutral-600);
+  transition: transform 0.15s ease;
+}
+
+.ss-participant-card[open] > summary::before {
+  transform: rotate(90deg);
+}
+
+.ss-participant-name {
+  flex: 1;
+  font-weight: 600;
+}
+
+.ss-participant-body {
+  margin-top: var(--space-4);
+}
+
+.ss-wishlist {
+  background: var(--color-neutral-100);
+  border-radius: var(--radius-md);
+  padding: var(--space-4);
+}
+
+.ss-wishlist .input {
+  background: var(--color-bg);
+}
+
+.ss-helper {
+  margin: 0;
+  font-size: 0.875rem;
+  color: var(--color-neutral-700);
+}
+
+.ss-tag-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+}
