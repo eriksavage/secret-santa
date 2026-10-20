@@ -4,17 +4,9 @@ import Footer from './components/Footer.jsx'
 import List from './components/List.jsx'
 import ParticipantForm from './components/ParticipantForm.jsx'
 import ExchangeSettings from './components/ExchangeSettings.jsx'
+import Exclusions from './components/Exclusions.jsx'
+import { createParticipant } from './participants.js'
 import { useState, useEffect } from 'react'
-
-function createParticipant() {
-  return {
-    id: crypto.randomUUID(),
-    name: '',
-    email: '',
-    excludeMatchingWith: null,
-    wishlist: '',
-  };
-}
 
 const SETTINGS_KEY = 'secretSanta.settings';
 
@@ -101,7 +93,7 @@ export default function App() {
       const gifter = gifters[i];
       const receiver = receivers[i];
       const hasSelf = gifter.id === receiver.id;
-      const hasExclusion = gifter.excludeMatchingWith === receiver.id || receiver.excludeMatchingWith === gifter.id;
+      const hasExclusion = gifter.partnerId === receiver.id || receiver.partnerId === gifter.id;
       const repeat = !settings.allowRepeats && previousMatches[gifter.id] === receiver.id;
       if (hasSelf || hasExclusion || repeat) {
         valid = false;
@@ -119,6 +111,7 @@ export default function App() {
       <Header />
       <div className="ss-wrap ss-section">
         <ExchangeSettings settings={settings} setSettings={setSettings} />
+        <Exclusions participants={participants} />
         <ParticipantForm makeMatches={makeMatches} participants={participants} setParticipants={setParticipants} />
         <List matches={matches} />
       </div>

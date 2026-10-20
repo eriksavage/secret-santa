@@ -94,6 +94,8 @@ message, and an avoid/allow-repeats toggle.
 
 ## 3. `feature/partner-exclusion-and-participant-cards`
 
+**Status:** ✅ Implemented
+
 **Goal:** Replace the one-way "Don't match with" dropdown with mutual partner
 linking, add the couples summary card, and restyle participants as collapsible
 cards.
@@ -293,7 +295,7 @@ for backfilling history from before this app existed.
 |---|--------|----------------------|--------|
 | 1 | `feature/design-tokens-and-layout` | `main` | ✅ Implemented |
 | 2 | `feature/exchange-settings` | #1 | ✅ Implemented |
-| 3 | `feature/partner-exclusion-and-participant-cards` | #2 |  |
+| 3 | `feature/partner-exclusion-and-participant-cards` | #2 | ✅ Implemented |
 | 4 | `feature/robust-match-generation` | #3 |  |
 | 5 | `feature/reveal-lock-matches` | #4 |  |
 | 6 | `feature/email-invites` | #5 |  |
