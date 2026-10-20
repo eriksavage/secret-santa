@@ -1,10 +1,13 @@
 import ParticipantInput from "./ParticipantInput";
 import { createParticipant, setPartner, removeParticipant } from "../participants.js";
 
+const MIN_PARTICIPANTS = 3;
+
 export default function ParticipantForm({ makeMatches, participants, setParticipants }) {
 
   const formSubmit = (event) => {
     event.preventDefault();
+    if (participants.length < MIN_PARTICIPANTS) return;
 
     const trimmedParticipants = participants.map((participant) => ({
       ...participant,
@@ -49,7 +52,17 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
             onRemove={deleteParticipant}
           />
         ))}
-        <input type="submit" className="btn btn-primary btn-block" value="Make Matches" />
+        <div className="field">
+          <input
+            type="submit"
+            className="btn btn-primary btn-block"
+            value="Generate matches"
+            disabled={participants.length < MIN_PARTICIPANTS}
+          />
+          {participants.length < MIN_PARTICIPANTS && (
+            <p className="ss-helper">Add at least {MIN_PARTICIPANTS} participants to generate matches.</p>
+          )}
+        </div>
       </form>
       <button className="btn btn-ghost" onClick={addParticipant}>Add Participant</button>
     </div>
