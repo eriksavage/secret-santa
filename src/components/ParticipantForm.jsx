@@ -3,7 +3,7 @@ import { createParticipant, setPartner, removeParticipant } from "../participant
 
 const MIN_PARTICIPANTS = 3;
 
-export default function ParticipantForm({ makeMatches, participants, setParticipants }) {
+export default function ParticipantForm({ makeMatches, participants, setParticipants, onParticipantAdded }) {
 
   const formSubmit = (event) => {
     event.preventDefault();
@@ -36,6 +36,7 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
 
   const addParticipant = () => {
     setParticipants([...participants, createParticipant()]);
+    onParticipantAdded?.();
   }
 
   return (

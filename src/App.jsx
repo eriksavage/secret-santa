@@ -74,11 +74,18 @@ export default function App() {
       <div className="ss-wrap ss-section">
         <ExchangeSettings settings={settings} setSettings={setSettings} />
         <Exclusions participants={participants} />
-        <ParticipantForm makeMatches={makeMatches} participants={participants} setParticipants={setParticipants} />
+        <ParticipantForm
+          makeMatches={makeMatches}
+          participants={participants}
+          setParticipants={setParticipants}
+          onParticipantAdded={() => setMatchError(null)}
+        />
         <MatchError
           error={matchError?.error}
-          showAllowRepeats={matchError?.repeatRelated && !settings.allowRepeats}
+          showAllowRepeats={!settings.allowRepeats}
+          repeatRelated={matchError?.repeatRelated}
           onAllowRepeats={allowRepeats}
+          onDismiss={() => setMatchError(null)}
         />
         <List matches={matches} />
       </div>

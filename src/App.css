@@ -436,6 +436,21 @@ footer {
   color: var(--color-accent-600);
 }
 
+.ss-error-card > .ss-card-row {
+  width: 100%;
+}
+
+.ss-error-close {
+  margin-left: auto;
+  background: none;
+  border: 0;
+  padding: 0 var(--space-2);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-accent-800);
+  cursor: pointer;
+}
+
 .ss-error-message {
   margin: 0;
   color: var(--color-accent-800);
