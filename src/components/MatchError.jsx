@@ -1,4 +1,4 @@
-export default function MatchError({ error, showAllowRepeats, repeatRelated, onAllowRepeats, onDismiss }) {
+export default function MatchError({ error, showAllowRepeats, onAllowRepeats, onDismiss }) {
   if (!error) {
     return null
   }
@@ -14,11 +14,7 @@ export default function MatchError({ error, showAllowRepeats, repeatRelated, onA
       </div>
       {showAllowRepeats && (
         <>
-          <p className="ss-helper">
-            {repeatRelated
-              ? 'Allowing repeat matches would make a valid arrangement possible.'
-              : 'You could try allowing repeat matches, though it may not be enough on its own.'}
-          </p>
+          <p className="ss-helper">Allowing repeat matches would make a valid arrangement possible.</p>
           <button type="button" className="btn btn-secondary" onClick={onAllowRepeats}>
             Allow repeat matches
           </button>

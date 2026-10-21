@@ -82,8 +82,7 @@ export default function App() {
         />
         <MatchError
           error={matchError?.error}
-          showAllowRepeats={!settings.allowRepeats}
-          repeatRelated={matchError?.repeatRelated}
+          showAllowRepeats={!settings.allowRepeats && Boolean(matchError?.repeatRelated)}
           onAllowRepeats={allowRepeats}
           onDismiss={() => setMatchError(null)}
         />
