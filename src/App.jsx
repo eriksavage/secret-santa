@@ -11,6 +11,8 @@ import { generateMatches } from './matching.js'
 import { useState, useEffect } from 'react'
 
 const SETTINGS_KEY = 'secretSanta.settings';
+const PARTICIPANTS_KEY = 'secretSanta.participants';
+const CURRENT_MATCHES_KEY = 'secretSanta.currentMatches';
 
 const defaultSettings = {
   budget: '',
@@ -28,16 +30,27 @@ function loadSettings() {
   }
 }
 
+function loadJSON(key, fallback) {
+  try {
+    const stored = localStorage.getItem(key);
+    return stored ? JSON.parse(stored) : fallback;
+  } catch {
+    return fallback;
+  }
+}
+
 export default function App() {
 
   const [participants, setParticipants] = useState(() => (
-    Array.from({ length: 1 }, createParticipant)
+    loadJSON(PARTICIPANTS_KEY, null) ?? [createParticipant()]
   ));
   const [previousMatches, setPreviousMatches] = useState(() => {
     const stored = localStorage.getItem('previousMatches');
     return stored ? JSON.parse(stored) : {};
   });
-  const [matches, setMatches] = useState([]);
+  // [{ giverId, receiverId }] for the active exchange, or null before generating.
+  const [currentMatches, setCurrentMatches] = useState(() => loadJSON(CURRENT_MATCHES_KEY, null));
+  const [revealMatches, setRevealMatches] = useState(false);
   const [settings, setSettings] = useState(loadSettings);
   const [matchError, setMatchError] = useState(null);
 
@@ -45,11 +58,29 @@ export default function App() {
     localStorage.setItem(SETTINGS_KEY, JSON.stringify(settings));
   }, [settings]);
 
+  useEffect(() => {
+    localStorage.setItem(PARTICIPANTS_KEY, JSON.stringify(participants));
+  }, [participants]);
+
+  useEffect(() => {
+    if (currentMatches) {
+      localStorage.setItem(CURRENT_MATCHES_KEY, JSON.stringify(currentMatches));
+    } else {
+      localStorage.removeItem(CURRENT_MATCHES_KEY);
+    }
+  }, [currentMatches]);
+
+  const participantsById = Object.fromEntries(participants.map((p) => [p.id, p]));
+  const matches = (currentMatches ?? [])
+    .map(({ giverId, receiverId }) => [participantsById[giverId], participantsById[receiverId]])
+    .filter(([giver, receiver]) => giver && receiver);
+  const locked = Boolean(currentMatches);
+
   function makeMatches(participants) {
     const result = generateMatches(participants, previousMatches, settings.allowRepeats);
     if (result.error) {
+      // A failed regenerate keeps the existing matches.
       setMatchError(result);
-      setMatches([]);
       return;
     }
     setMatchError(null);
@@ -58,15 +89,20 @@ export default function App() {
     );
     setPreviousMatches(newPreviousMatches);
     localStorage.setItem('previousMatches', JSON.stringify(newPreviousMatches));
-    setMatches(result.matches);
+    setCurrentMatches(result.matches.map(([giver, receiver]) => ({ giverId: giver.id, receiverId: receiver.id })));
+    setRevealMatches(false);
+  }
+
+  function unlockParticipants() {
+    setCurrentMatches(null);
+    setRevealMatches(false);
+    setMatchError(null);
   }
 
   function allowRepeats() {
     setSettings({ ...settings, allowRepeats: true });
     setMatchError(null);
   }
-
-  useEffect(() => { setParticipants(participants) }, [participants])
 
   return (
     <main>
@@ -79,6 +115,8 @@ export default function App() {
           participants={participants}
           setParticipants={setParticipants}
           onParticipantAdded={() => setMatchError(null)}
+          locked={locked}
+          onUnlock={unlockParticipants}
         />
         <MatchError
           error={matchError?.error}
@@ -86,7 +124,12 @@ export default function App() {
           onAllowRepeats={allowRepeats}
           onDismiss={() => setMatchError(null)}
         />
-        <List matches={matches} />
+        <List
+          matches={matches}
+          revealed={revealMatches}
+          onToggleReveal={() => setRevealMatches(!revealMatches)}
+          onRegenerate={() => makeMatches(participants)}
+        />
       </div>
       <Footer />
     </main>
