@@ -14,7 +14,7 @@ function shuffle(array) {
 
 // giverId -> receiverIds the giver may be matched with, honoring self,
 // partner, and (unless allowed) repeat-from-last-time exclusions.
-function buildEligible(participants, previousMatches, allowRepeats) {
+function buildEligibleReceivers(participants, previousMatches, allowRepeats) {
   return Object.fromEntries(participants.map((giver) => [
     giver.id,
     participants
@@ -28,37 +28,43 @@ function buildEligible(participants, previousMatches, allowRepeats) {
   ]));
 }
 
-// Backtracking assignment: most-constrained givers first, candidates in random
-// order so each run can produce a different valid arrangement.
-function assign(participants, eligible) {
-  const givers = shuffle(participants).sort((a, b) => eligible[a.id].length - eligible[b.id].length);
-  const taken = new Set();
-  const assignment = {};
-  let steps = 0;
-
-  function backtrack(index) {
-    if (index === givers.length) return true;
-    if (++steps > MAX_STEPS) return false;
-    const giver = givers[index];
-    for (const receiverId of shuffle(eligible[giver.id])) {
-      if (taken.has(receiverId)) continue;
-      taken.add(receiverId);
-      assignment[giver.id] = receiverId;
-      if (backtrack(index + 1)) return true;
-      taken.delete(receiverId);
-      delete assignment[giver.id];
-    }
-    return false;
+// Tries to give the giver at `index` each eligible receiver in random order,
+// recursing to the next giver. `state` is the shared search state:
+// { givers, eligible, taken, assignment, steps }.
+function tryReceiverForGiver(index, state) {
+  const { givers, eligible, taken, assignment } = state;
+  if (index === givers.length) return true;
+  if (++state.steps > MAX_STEPS) return false;
+  const giver = givers[index];
+  for (const receiverId of shuffle(eligible[giver.id])) {
+    if (taken.has(receiverId)) continue;
+    taken.add(receiverId);
+    assignment[giver.id] = receiverId;
+    if (tryReceiverForGiver(index + 1, state)) return true;
+    taken.delete(receiverId);
+    delete assignment[giver.id];
   }
-
-  return backtrack(0) ? assignment : null;
+  return false;
 }
 
-function findAssignment(participants, previousMatches, allowRepeats) {
-  const eligible = buildEligible(participants, previousMatches, allowRepeats);
+// Backtracking assignment: most-constrained givers first, candidates in random
+// order so each run can produce a different valid arrangement.
+function findValidAssignment(participants, eligible) {
+  const state = {
+    givers: shuffle(participants).sort((a, b) => eligible[a.id].length - eligible[b.id].length),
+    eligible,
+    taken: new Set(),
+    assignment: {},
+    steps: 0,
+  };
+  return tryReceiverForGiver(0, state) ? state.assignment : null;
+}
+
+function findMatchingAssignment(participants, previousMatches, allowRepeats) {
+  const eligible = buildEligibleReceivers(participants, previousMatches, allowRepeats);
   const stuck = participants.find((p) => eligible[p.id].length === 0);
   if (stuck) return { stuck };
-  const assignment = assign(participants, eligible);
+  const assignment = findValidAssignment(participants, eligible);
   return assignment ? { assignment } : {};
 }
 
@@ -66,7 +72,7 @@ function findAssignment(participants, previousMatches, allowRepeats) {
 // { error, repeatRelated } where repeatRelated means allowing repeat matches
 // would make a valid arrangement possible.
 export function generateMatches(participants, previousMatches, allowRepeats) {
-  const { assignment, stuck } = findAssignment(participants, previousMatches, allowRepeats);
+  const { assignment, stuck } = findMatchingAssignment(participants, previousMatches, allowRepeats);
 
   if (assignment) {
     const byId = Object.fromEntries(participants.map((p) => [p.id, p]));
@@ -74,7 +80,7 @@ export function generateMatches(participants, previousMatches, allowRepeats) {
   }
 
   const repeatRelated = !allowRepeats
-    && Boolean(findAssignment(participants, previousMatches, true).assignment);
+    && Boolean(findMatchingAssignment(participants, previousMatches, true).assignment);
 
   const error = stuck
     ? `${participantLabel(participants, stuck.id)} has no one they can be matched with. `
