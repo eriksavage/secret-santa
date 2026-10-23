@@ -416,3 +416,43 @@ footer {
   flex-wrap: wrap;
   gap: var(--space-2);
 }
+
+/* ---------- Match error ---------- */
+
+.ss-error-card {
+  display: grid;
+  gap: var(--space-3);
+  justify-items: start;
+  background: var(--color-accent-100);
+  border: 1px solid var(--color-accent-300);
+}
+
+.ss-error-card > .ss-card-row {
+  justify-content: flex-start;
+}
+
+.ss-error-icon {
+  font-size: 1.5rem;
+  color: var(--color-accent-600);
+}
+
+.ss-error-card > .ss-card-row {
+  width: 100%;
+}
+
+.ss-error-close {
+  margin-left: auto;
+  background: none;
+  border: 0;
+  padding: 0 var(--space-2);
+  font-size: 1.5rem;
+  line-height: 1;
+  color: var(--color-accent-800);
+  cursor: pointer;
+}
+
+.ss-error-message {
+  margin: 0;
+  color: var(--color-accent-800);
+  font-weight: 500;
+}

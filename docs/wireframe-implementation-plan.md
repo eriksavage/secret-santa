@@ -127,6 +127,8 @@ generation changes beyond reading `partnerId` instead of `excludeMatchingWith`.
 
 ## 4. `feature/robust-match-generation`
 
+**Status:** ✅ Implemented
+
 **Goal:** Replace the current shuffle-and-retry loop (which can spin forever on an
 infeasible constraint set) with a backtracking matcher that fails fast and explains
 why.
@@ -296,7 +298,7 @@ for backfilling history from before this app existed.
 | 1 | `feature/design-tokens-and-layout` | `main` | ✅ Implemented |
 | 2 | `feature/exchange-settings` | #1 | ✅ Implemented |
 | 3 | `feature/partner-exclusion-and-participant-cards` | #2 | ✅ Implemented |
-| 4 | `feature/robust-match-generation` | #3 |  |
+| 4 | `feature/robust-match-generation` | #3 | ✅ Implemented |
 | 5 | `feature/reveal-lock-matches` | #4 |  |
 | 6 | `feature/email-invites` | #5 |  |
 | 7 | `feature/history-tab-and-autosave` | #6 |  |
