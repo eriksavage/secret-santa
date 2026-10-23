@@ -14,7 +14,7 @@ function shuffle(array) {
 
 // giverId -> receiverIds the giver may be matched with, honoring self,
 // partner, and (unless allowed) repeat-from-last-time exclusions.
-function buildEligibleReceivers(participants, previousMatches, allowRepeats) {
+function determineEligibleReceivers(participants, previousMatches, allowRepeats) {
   return Object.fromEntries(participants.map((giver) => [
     giver.id,
     participants
@@ -61,7 +61,7 @@ function findValidAssignment(participants, eligible) {
 }
 
 function findMatchingAssignment(participants, previousMatches, allowRepeats) {
-  const eligible = buildEligibleReceivers(participants, previousMatches, allowRepeats);
+  const eligible = determineEligibleReceivers(participants, previousMatches, allowRepeats);
   const stuck = participants.find((p) => eligible[p.id].length === 0);
   if (stuck) return { stuck };
   const assignment = findValidAssignment(participants, eligible);

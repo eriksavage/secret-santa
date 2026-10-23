@@ -3,7 +3,7 @@
 ## Naming
 
 Prefer explicit function names that show the intent of the function over short,
-generic ones. For example, `buildEligibleReceivers` rather than `buildEligible`,
+generic ones. For example, `determineEligibleReceivers` rather than `buildEligible`,
 and `findValidAssignment` rather than `assign`.
 
 Define each function in its own top-level block; don't nest function
