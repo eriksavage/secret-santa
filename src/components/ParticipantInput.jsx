@@ -1,6 +1,6 @@
 import { participantLabel } from '../participants.js'
 
-export default function ParticipantInput({ participant, participants, onChange, onPartnerChange, onRemove }) {
+export default function ParticipantInput({ participant, participants, locked, onChange, onPartnerChange, onRemove }) {
   const { id } = participant;
   const label = participantLabel(participants, id);
 
@@ -18,14 +18,16 @@ export default function ParticipantInput({ participant, participants, onChange, 
           {participant.partnerId && (
             <span className="tag tag-accent-2">♡ {participantLabel(participants, participant.partnerId)}</span>
           )}
-          <button
-            type="button"
-            className="btn btn-ghost btn-icon"
-            aria-label={`Remove ${label}`}
-            onClick={handleRemove}
-          >
-            ✕
-          </button>
+          {!locked && (
+            <button
+              type="button"
+              className="btn btn-ghost btn-icon"
+              aria-label={`Remove ${label}`}
+              onClick={handleRemove}
+            >
+              ✕
+            </button>
+          )}
         </span>
       </summary>
       <div className="card-body ss-participant-body">

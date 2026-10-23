@@ -3,7 +3,7 @@ import { createParticipant, setPartner, removeParticipant } from "../participant
 
 const MIN_PARTICIPANTS = 3;
 
-export default function ParticipantForm({ makeMatches, participants, setParticipants, onParticipantAdded }) {
+export default function ParticipantForm({ makeMatches, participants, setParticipants, onParticipantAdded, locked, onUnlock }) {
 
   const formSubmit = (event) => {
     event.preventDefault();
@@ -43,21 +43,33 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
     <div className="card ss-section">
       <h2 className="card-title">Participants</h2>
       <form className="ss-section" onSubmit={formSubmit}>
-        {participants.map((participant) => (
-          <ParticipantInput
-            key={participant.id}
-            participant={participant}
-            participants={participants}
-            onChange={updateParticipant}
-            onPartnerChange={updatePartner}
-            onRemove={deleteParticipant}
-          />
-        ))}
+        {locked && (
+          <div className="ss-lock-banner ss-card-row" role="status">
+            <span>🔒 Matches are generated — participant details are locked.</span>
+            <button type="button" className="btn btn-ghost" onClick={onUnlock}>Unlock &amp; edit</button>
+          </div>
+        )}
+        <fieldset className="ss-fieldset ss-section" disabled={locked}>
+          {participants.map((participant) => (
+            <ParticipantInput
+              key={participant.id}
+              participant={participant}
+              participants={participants}
+              locked={locked}
+              onChange={updateParticipant}
+              onPartnerChange={updatePartner}
+              onRemove={deleteParticipant}
+            />
+          ))}
+          {!locked && (
+            <button type="button" className="btn btn-ghost" onClick={addParticipant}>Add Participant</button>
+          )}
+        </fieldset>
         <div className="field">
           <input
             type="submit"
             className="btn btn-primary btn-block"
-            value="Generate matches"
+            value={locked ? 'Regenerate matches' : 'Generate matches'}
             disabled={participants.length < MIN_PARTICIPANTS}
           />
           {participants.length < MIN_PARTICIPANTS && (
@@ -65,7 +77,6 @@ export default function ParticipantForm({ makeMatches, participants, setParticip
           )}
         </div>
       </form>
-      <button className="btn btn-ghost" onClick={addParticipant}>Add Participant</button>
     </div>
   )
 }
