@@ -160,6 +160,8 @@ why.
 
 ## 5. `feature/reveal-lock-matches`
 
+**Status:** ✅ Implemented
+
 **Goal:** Hide generated pairings by default, add a reveal toggle, lock participant
 editing once matches exist, and support regenerating.
 
@@ -299,7 +301,7 @@ for backfilling history from before this app existed.
 | 2 | `feature/exchange-settings` | #1 | ✅ Implemented |
 | 3 | `feature/partner-exclusion-and-participant-cards` | #2 | ✅ Implemented |
 | 4 | `feature/robust-match-generation` | #3 | ✅ Implemented |
-| 5 | `feature/reveal-lock-matches` | #4 |  |
+| 5 | `feature/reveal-lock-matches` | #4 | ✅ Implemented |
 | 6 | `feature/email-invites` | #5 |  |
 | 7 | `feature/history-tab-and-autosave` | #6 |  |
 | 8 | `feature/history-manual-editing` | #7 |  |
