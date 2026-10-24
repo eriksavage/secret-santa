@@ -190,6 +190,8 @@ editing once matches exist, and support regenerating.
 
 ## 6. `feature/email-invites`
 
+**Status:** ✅ Implemented
+
 **Goal:** Let organizers send each participant a `mailto:` invite with their match,
 wishlist, budget, date, and custom message — and track what's been sent.
 
@@ -302,7 +304,7 @@ for backfilling history from before this app existed.
 | 3 | `feature/partner-exclusion-and-participant-cards` | #2 | ✅ Implemented |
 | 4 | `feature/robust-match-generation` | #3 | ✅ Implemented |
 | 5 | `feature/reveal-lock-matches` | #4 | ✅ Implemented |
-| 6 | `feature/email-invites` | #5 |  |
+| 6 | `feature/email-invites` | #5 | ✅ Implemented |
 | 7 | `feature/history-tab-and-autosave` | #6 |  |
 | 8 | `feature/history-manual-editing` | #7 |  |
 | 9 | `feature/history-import-export` | #8 |  |
