@@ -487,3 +487,43 @@ footer {
     align-items: flex-start;
   }
 }
+
+/* ---------- Invites ---------- */
+
+.ss-invite-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: grid;
+  gap: var(--space-2);
+}
+
+.ss-invite-row {
+  background: var(--color-neutral-100);
+  border-radius: var(--radius-md);
+  padding: var(--space-2) var(--space-3);
+  flex-wrap: wrap;
+}
+
+.ss-invite-who {
+  display: grid;
+  min-width: 0;
+}
+
+.ss-invite-row a.btn {
+  text-decoration: none;
+}
+
+.ss-checkbox {
+  display: inline-flex;
+  align-items: center;
+  gap: var(--space-2);
+  font-weight: 600;
+  color: var(--color-neutral-700);
+}
+
+.ss-checkbox input {
+  accent-color: var(--color-accent-2);
+  width: 1.1em;
+  height: 1.1em;
+}

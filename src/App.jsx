@@ -6,13 +6,16 @@ import ParticipantForm from './components/ParticipantForm.jsx'
 import ExchangeSettings from './components/ExchangeSettings.jsx'
 import Exclusions from './components/Exclusions.jsx'
 import MatchError from './components/MatchError.jsx'
+import Invites from './components/Invites.jsx'
 import { createParticipant } from './participants.js'
 import { generateMatches } from './matching.js'
+import { buildMailto } from './invites.js'
 import { useState, useEffect } from 'react'
 
 const SETTINGS_KEY = 'secretSanta.settings';
 const PARTICIPANTS_KEY = 'secretSanta.participants';
 const CURRENT_MATCHES_KEY = 'secretSanta.currentMatches';
+const SENT_MAP_KEY = 'secretSanta.sentMap';
 
 const defaultSettings = {
   budget: '',
@@ -51,6 +54,8 @@ export default function App() {
   // [{ giverId, receiverId }] for the active exchange, or null before generating.
   const [currentMatches, setCurrentMatches] = useState(() => loadJSON(CURRENT_MATCHES_KEY, null));
   const [revealMatches, setRevealMatches] = useState(false);
+  // { [giverId]: true } for invites sent for the current matches.
+  const [sentMap, setSentMap] = useState(() => loadJSON(SENT_MAP_KEY, {}));
   const [settings, setSettings] = useState(loadSettings);
   const [matchError, setMatchError] = useState(null);
 
@@ -69,6 +74,10 @@ export default function App() {
       localStorage.removeItem(CURRENT_MATCHES_KEY);
     }
   }, [currentMatches]);
+
+  useEffect(() => {
+    localStorage.setItem(SENT_MAP_KEY, JSON.stringify(sentMap));
+  }, [sentMap]);
 
   const participantsById = Object.fromEntries(participants.map((p) => [p.id, p]));
   const matches = (currentMatches ?? [])
@@ -91,12 +100,25 @@ export default function App() {
     localStorage.setItem('previousMatches', JSON.stringify(newPreviousMatches));
     setCurrentMatches(result.matches.map(([giver, receiver]) => ({ giverId: giver.id, receiverId: receiver.id })));
     setRevealMatches(false);
+    setSentMap({});
   }
 
   function unlockParticipants() {
     setCurrentMatches(null);
     setRevealMatches(false);
+    setSentMap({});
     setMatchError(null);
+  }
+
+  function markInviteSent(giverId) {
+    setSentMap((sent) => ({ ...sent, [giverId]: true }));
+  }
+
+  function sendAllInvites() {
+    matches.forEach(([giver, receiver]) => {
+      window.open(buildMailto(giver, receiver, settings), '_blank', 'noopener,noreferrer');
+    });
+    setSentMap(Object.fromEntries(matches.map(([giver]) => [giver.id, true])));
   }
 
   function allowRepeats() {
@@ -129,6 +151,14 @@ export default function App() {
           revealed={revealMatches}
           onToggleReveal={() => setRevealMatches(!revealMatches)}
           onRegenerate={() => makeMatches(participants)}
+        />
+        <Invites
+          matches={matches}
+          participants={participants}
+          settings={settings}
+          sentMap={sentMap}
+          onSent={markInviteSent}
+          onSendAll={sendAllInvites}
         />
       </div>
       <Footer />
